@@ -14,7 +14,11 @@
         <link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
 
         <style>
-            body {background-color: black;}
+            html { height: 100vh; }
+            body {
+                background-color: black;
+                height: 100%;
+            }
             .clockfont {
                 color: red;
                 position: absolute;
@@ -40,9 +44,6 @@
             function enableNoSleep() {
                 noSleep.enable();
                 document.removeEventListener('touchstart', enableNoSleep, false);
-                const elem = document.documentElement;
-                if (elem.requestFullscreen) {elem.requestFullscreen()}
-
             }
 
             document.addEventListener('touchstart', enableNoSleep, false);
