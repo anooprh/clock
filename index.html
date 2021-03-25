@@ -33,7 +33,7 @@
         <div class="clockfont">
             <span id="time"></span>
         </div>
-        {% comment %} <script type="text/javascript" src="./lib/NoSleep.min.js"></script> {% endcomment %}
+        <script type="text/javascript" src="./lib/NoSleep.min.js"></script>
         <script>
             var noSleep = new NoSleep();
             function enableNoSleep() {
@@ -46,7 +46,7 @@
 
             function startTime() {
                 var today = new Date();
-                var h = today.getHours()%12%;
+                var h = today.getHours()%12;
                 var m = today.getMinutes();
                 m = checkTime(m);
                 document.getElementById('time').innerHTML =
