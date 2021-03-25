@@ -38,7 +38,6 @@
         <script>
             var noSleep = new NoSleep();
             function enableNoSleep() {
-                window.scrollTo(0,1);
                 noSleep.enable();
                 document.removeEventListener('touchstart', enableNoSleep, false);
             }
