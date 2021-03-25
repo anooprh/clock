@@ -40,6 +40,9 @@
             function enableNoSleep() {
                 noSleep.enable();
                 document.removeEventListener('touchstart', enableNoSleep, false);
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) {elem.requestFullscreen()}
+
             }
 
             document.addEventListener('touchstart', enableNoSleep, false);
