@@ -39,10 +39,37 @@
                 width: 100vw;
                 height: 100vh;
             }
+            #seconds_hider {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -moz-transform: translateX(-50%) translateY(-50%);
+                -webkit-transform: translateX(-50%) translateY(-50%);
+                transform: translateX(-50%) translateY(-50%);
+                width : calc(100vw - 10vh);
+                height : calc(100vh - 10vh);
+                border-radius: 5px;
+                background-color: black;
+            }
+            .circle {
+                overflow: hidden;
+                position: absolute;
+                transform-origin: 100% 100%;
+                background: red;
+                width: 5000px;
+                height: 5000px;
+                left: 50%;
+                top: 50%;
+                margin-top: -5000px;
+                margin-left: -5000px;
+                transform: rotate(90deg) skew(84deg);
+            }
         </style>
     </head>
     <body onload="startTime()">
         <div class="wrapper">
+            <div class="circle"></div>
+            <div id="seconds_hider"></div>
             <div class="clockfont">
                 <span id="time"></span>
             </div>
@@ -67,9 +94,12 @@
                 }
                 var m = today.getMinutes();
                 m = checkTime(m);
+                var s = today.getSeconds()
                 document.getElementById('time').innerHTML =
                 h + ":" + m;
-                var t = setTimeout(startTime, 500);
+                s = ((s-1)*6 + 90)%360;
+                $('.circle').css("transform",  `rotate(${s}deg) skew(84deg)`);
+                var t = setTimeout(startTime, 100);
             }
             function checkTime(i) {
                 if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
