@@ -97,7 +97,7 @@
                 var s = today.getSeconds()
                 document.getElementById('time').innerHTML =
                 h + ":" + m;
-                s = ((s-1)*6 + 90)%360;
+                s = (s*6 + 84)%360;
                 $('.circle').css("transform",  `rotate(${s}deg) skew(84deg)`);
                 var t = setTimeout(startTime, 100);
             }
