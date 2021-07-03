@@ -7,7 +7,9 @@ export class App extends React.Component {
   render() {
     return (
       <div className={"body"}>
-        Hello World
+        <div className={"clockfont"}>
+          <span id="time"></span>
+        </div>
       </div>
     );
   }
