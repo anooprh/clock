@@ -38,6 +38,7 @@
             .wrapper {
                 width: 100vw;
                 height: 100vh;
+                overflow: hidden;
             }
             #seconds_hider {
                 position: absolute;
@@ -54,21 +55,18 @@
             .circle {
                 overflow: hidden;
                 position: absolute;
-                transform-origin: 100% 100%;
+                transform-origin: top;
                 background: red;
-                width: 5000px;
-                height: 5000px;
+                width: 5vmin;
+                height: 100vmax;
                 left: 50%;
                 top: 50%;
-                margin-top: -5000px;
-                margin-left: -5000px;
-                transform: rotate(90deg) skew(84deg);
             }
         </style>
     </head>
     <body onload="startTime()">
         <div class="wrapper">
-            <!-- <div class="circle"></div> -->
+            <div class="circle"></div>
             <div id="seconds_hider"></div>
             <div class="clockfont">
                 <span id="time"></span>
@@ -97,8 +95,9 @@
                 var s = today.getSeconds()
                 document.getElementById('time').innerHTML =
                 h + ":" + m;
-                s = (s*6 + 84)%360;
-                $('.circle').css("transform",  `rotate(${s}deg) skew(84deg)`);
+                var sdeg = ((s*6) + 180)%360;
+                $('.circle').css('transform', `rotateZ(${sdeg}deg)`);
+                console.log($('.circle').prop('clientHeight'));
                 var t = setTimeout(startTime, 100);
             }
             function checkTime(i) {
@@ -110,11 +109,9 @@
             var fadeInBuffer = false;
             $(document).mousemove(function() {
                 if (!fadeInBuffer && timer) {
-                    console.log("clearTimer");
                     clearTimeout(timer);
                     timer = 0;
 
-                    console.log("fadeIn");
                     $('html').css({
                     cursor: ''
                     });
@@ -126,7 +123,6 @@
                 }
 
                 timer = setTimeout(function() {
-                    console.log("fadeout");
                     $('.wrapper').css({
                         cursor: 'none'
                     });
