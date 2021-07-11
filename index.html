@@ -36,38 +36,26 @@
                 max-height: 100vh;
             }
             .wrapper {
-                width: 100vw;
-                height: 100vh;
+                width: calc(100vw);
+                height: calc(100vh);
                 overflow: hidden;
             }
-            #seconds_hider {
+            .second {
                 position: absolute;
-                top: 50%;
-                left: 50%;
-                -moz-transform: translateX(-50%) translateY(-50%);
-                -webkit-transform: translateX(-50%) translateY(-50%);
-                transform: translateX(-50%) translateY(-50%);
-                width : calc(100vw - 30px);
-                height : calc(100vh - 30px);
-                border-radius: 5px;
-                background-color: black;
-            }
-            .circle {
-                overflow: hidden;
-                position: absolute;
-                transform-origin: top;
                 background: red;
-                width: 5vmin;
-                height: 100vmax;
-                left: 50%;
-                top: 50%;
+                width: 6vmin;
+                height: 5vmin;
+                font-family: 'Montserrat', sans-serif;
+                font-size: 4vmin;
+                text-align: center;
+                vertical-align: middle;
+                border-radius: 1vmin;
             }
         </style>
     </head>
     <body onload="startTime()">
         <div class="wrapper">
-            <div class="circle"></div>
-            <div id="seconds_hider"></div>
+            <div class="second"></div>
             <div class="clockfont">
                 <span id="time"></span>
             </div>
@@ -83,6 +71,11 @@
 
             document.addEventListener('touchstart', enableNoSleep, false);
 
+            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+            const diagangle = Math.atan(vw/vh) * 180 / Math.PI;
+
+            console.log("diagangle", diagangle);
 
             function startTime() {
                 var today = new Date();
@@ -93,11 +86,82 @@
                 var m = today.getMinutes();
                 m = checkTime(m);
                 var s = today.getSeconds()
+                //s = 20;
                 document.getElementById('time').innerHTML =
                 h + ":" + m;
-                var sdeg = ((s*6) + 180)%360;
-                $('.circle').css('transform', `rotateZ(${sdeg}deg)`);
-                console.log($('.circle').prop('clientHeight'));
+                $('.second').text(s);
+                var sdeg = ((s*6))%360;
+
+                if (sdeg >= 0 && sdeg <= diagangle) {
+                    console.log("0-45");
+                    var r = (vw/2) - (vh/2)*Math.tan(sdeg * Math.PI/180);
+                    $('.second').css('transform', 'translate(-50%, 0%)')
+                    $('.second').css('top', '0')
+                    $('.second').css('bottom', '');
+                    $('.second').css('left', '');
+                    $('.second').css('right', r);
+                } else if (sdeg > diagangle && sdeg <= 90) {
+                    console.log("45-90");
+                    var t = (vw/2)*Math.tan((sdeg-diagangle) * Math.PI/180);
+                    $('.second').css('transform', 'translate(0%, -50%)')
+                    $('.second').css('top', t);
+                    $('.second').css('bottom', '')
+                    $('.second').css('left', '');
+                    $('.second').css('right', '0');
+                } else if (sdeg > 90 && sdeg <= (180-diagangle)) {
+                    console.log("90-135");
+                    var b = (vh/2) - (vw/2)*Math.tan((sdeg-90) * Math.PI/180);
+                    $('.second').css('transform', 'translate(0%, -50%)')
+                    $('.second').css('top', '');
+                    $('.second').css('bottom', b);
+                    $('.second').css('left', '');
+                    $('.second').css('right', '0');
+                } else if (sdeg > (180-diagangle) && sdeg <= 180) {
+                    console.log("135-180");
+                    var r = (vw/2) - (vh/2)*Math.tan((180-sdeg) * Math.PI/180);
+                    $('.second').css('transform', 'translate(-50%, 0%)')
+                    $('.second').css('top', '');
+                    $('.second').css('bottom', '0');
+                    $('.second').css('left', '');
+                    $('.second').css('right', r);
+                } else if (sdeg > 180 && sdeg <= (180+diagangle)) {
+                    console.log("180-225");
+                    var l = (vw/2) - (vh/2)*Math.tan((sdeg-180) * Math.PI/180);
+                    $('.second').css('transform', 'translate(-50%, 0%)')
+                    $('.second').css('top', '');
+                    $('.second').css('bottom', '0');
+                    $('.second').css('left', l);
+                    $('.second').css('right', '');
+                } else if (sdeg > (180+diagangle) && (sdeg <= 270)) {
+                    console.log("225-270");
+                    var b = (vh/2) - (vw/2)*Math.tan((270-sdeg) * Math.PI/180);
+                    $('.second').css('transform', 'translate(0%, -50%)')
+                    $('.second').css('top', '');
+                    $('.second').css('bottom', b);
+                    $('.second').css('left', '0');
+                    $('.second').css('right', '');
+                } else if ((sdeg > 270) && (sdeg <= (360 - diagangle))) {
+                    console.log("270-315");
+                    var t = (vh/2) - (vw/2)*Math.tan((sdeg-270) * Math.PI/180);
+                    $('.second').css('transform', 'translate(0%, -50%)')
+                    $('.second').css('top', t);
+                    $('.second').css('bottom', '');
+                    $('.second').css('left', '0');
+                    $('.second').css('right', '');
+                } else if ((sdeg > (360 - diagangle)) && (sdeg <= 360)) {
+                    console.log("315-360");
+                    var l = (vw/2) - (vh/2)*Math.tan((360-sdeg) * Math.PI/180);
+                    $('.second').css('transform', 'translate(-50%, 0%)')
+                    $('.second').css('top', '0')
+                    $('.second').css('bottom', '');
+                    $('.second').css('left', l);
+                    $('.second').css('right', '');
+                } else {
+                    $('.second').css('left', '');
+                    $('.second').css('right', '');
+                    $('.second').css('top', '');
+                    $('.second').css('bottom', '');
+                }
                 var t = setTimeout(startTime, 100);
             }
             function checkTime(i) {
@@ -105,6 +169,7 @@
                 return i;
             }
 
+            // Hide Mouse Cursor
             var timer;
             var fadeInBuffer = false;
             $(document).mousemove(function() {
@@ -133,6 +198,7 @@
             $('.wrapper').css({
                 cursor: 'default'
             });
+
             </script>
     </body>
 </html>
